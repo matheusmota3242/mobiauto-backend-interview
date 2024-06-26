@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: mobiauto-backend-interview
+
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+secret: kh8Jgsyok1WNWTWgQ8DpvwyPJzhTXUlCkh8Jgsyok1WNWTWgQ8DpvwyPJzhTXUlC

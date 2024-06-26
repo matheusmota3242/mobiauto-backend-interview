@@ -3,7 +3,9 @@ package com.m2g2.mobiauto_backend_interview.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -17,23 +19,27 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "O campo 'primeiroNome' deve ser informado")
     private String primeiroNome;
 
-    @NotBlank
+    @NotBlank(message = "O campo 'sobrenome' deve ser informado")
     private String sobrenome;
 
-    @NotBlank
+    @NotBlank(message = "O campo 'email' deve ser informado")
     @Column(unique = true)
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "O campo 'senha' deve ser informado")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    private String senha;
 
     @ManyToMany
-    @JoinColumn(name = "papel_id")
+    @JoinTable(name = "papel_usuario")
+    @NotNull(message = "O campo 'papeis' deve ser informado")
     private Collection<Papel> papeis = new ArrayList<>();
+
+    @ManyToOne
+    private Revenda revenda;
 
     public Long getId() {
         return id;
@@ -75,18 +81,32 @@ public class Usuario implements UserDetails {
         this.papeis = papeis;
     }
 
+    public Revenda getRevenda() {
+        return revenda;
+    }
+
+    public void setRevenda(Revenda revenda) {
+        this.revenda = revenda;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return papeis.stream().map(papel ->
+             new SimpleGrantedAuthority("ROLE_".concat(papel.getDescricao()))
+        ).toList();
     }
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.senha;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getSenha() {
+        return this.senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override
@@ -101,7 +121,9 @@ public class Usuario implements UserDetails {
                 ", primeiroNome='" + primeiroNome + '\'' +
                 ", sobrenome='" + sobrenome + '\'' +
                 ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
                 ", papeis=" + papeis +
+                ", revenda=" + revenda +
                 '}';
     }
 }
