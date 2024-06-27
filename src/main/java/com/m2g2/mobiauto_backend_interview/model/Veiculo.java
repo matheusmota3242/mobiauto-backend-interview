@@ -13,11 +13,11 @@ public class Veiculo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "marca_id")
     private Marca marca;
 
-    @NotBlank
+    @NotBlank()
     private String modelo;
 
     @NotBlank

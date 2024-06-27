@@ -2,6 +2,9 @@ package com.m2g2.mobiauto_backend_interview.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import java.util.List;
 
 @Entity
 public class Revenda {
@@ -10,6 +13,7 @@ public class Revenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CNPJ
     @NotBlank
     @Column(unique = true)
     private String cnpj;
@@ -21,8 +25,18 @@ public class Revenda {
     @NotBlank
     private String nomeFantasia;
 
+    @OneToMany(mappedBy = "revenda")
+    private List<Usuario> usuarios;
+
     public Long getId() {
         return id;
+    }
+
+    public Revenda() {
+        super();
+    }
+    public Revenda(Long id) {
+        this.id = id;
     }
 
     public void setId(Long id) {
@@ -53,6 +67,14 @@ public class Revenda {
         this.nomeFantasia = nomeFantasia;
     }
 
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
     @Override
     public String toString() {
         return "Revenda{" +
@@ -60,6 +82,7 @@ public class Revenda {
                 ", cnpj='" + cnpj + '\'' +
                 ", razaoSocial='" + razaoSocial + '\'' +
                 ", nomeFantasia='" + nomeFantasia + '\'' +
+                ", usuarios=" + usuarios +
                 '}';
     }
 }

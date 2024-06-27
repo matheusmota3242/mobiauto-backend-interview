@@ -1,6 +1,5 @@
 package com.m2g2.mobiauto_backend_interview;
 
-import com.m2g2.mobiauto_backend_interview.controller.AutenticacaoController;
 import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import com.m2g2.mobiauto_backend_interview.model.Papel;
 import com.m2g2.mobiauto_backend_interview.model.Usuario;

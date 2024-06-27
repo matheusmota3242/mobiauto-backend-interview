@@ -1,15 +1,16 @@
 package com.m2g2.mobiauto_backend_interview.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 
 @Entity
@@ -25,6 +26,7 @@ public class Usuario implements UserDetails {
     @NotBlank(message = "O campo 'sobrenome' deve ser informado")
     private String sobrenome;
 
+    @Email
     @NotBlank(message = "O campo 'email' deve ser informado")
     @Column(unique = true)
     private String email;
@@ -112,6 +114,25 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public boolean contemAlgumPapel(String... descricoes) {
+        List<String> listaDescricoes = List.of(descricoes);
+        return this.papeis.stream().anyMatch(papel ->
+                listaDescricoes.contains(papel.getDescricao()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

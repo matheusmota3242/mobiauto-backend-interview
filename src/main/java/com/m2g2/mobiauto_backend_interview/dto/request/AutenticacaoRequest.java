@@ -1,3 +1,6 @@
 package com.m2g2.mobiauto_backend_interview.dto.request;
 
-public record AutenticacaoRequest(String email, String senha) {}
+import jakarta.validation.constraints.NotBlank;
+
+public record AutenticacaoRequest(@NotBlank(message = "O campo 'email' precisa estar preenchido.") String email,
+                                  @NotBlank(message = "O campo 'senha' precisa estar preenchido.") String senha) {}
