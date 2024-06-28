@@ -36,6 +36,8 @@ public class Oportunidade  {
 
     private LocalDate dataFim;
 
+    private LocalDate dataUltimaTransferencia;
+
     private String motivoConclusao;
 
     public Long getId() {
@@ -102,6 +104,14 @@ public class Oportunidade  {
         this.dataFim = dataFim;
     }
 
+    public LocalDate getDataUltimaTransferencia() {
+        return dataUltimaTransferencia;
+    }
+
+    public void setDataUltimaTransferencia(LocalDate dataUltimaTransferencia) {
+        this.dataUltimaTransferencia = dataUltimaTransferencia;
+    }
+
     public String getMotivoConclusao() {
         return motivoConclusao;
     }
@@ -121,6 +131,7 @@ public class Oportunidade  {
                 ", cliente=" + cliente +
                 ", dataInicio=" + dataInicio +
                 ", dataFim=" + dataFim +
+                ", dataUltimaTransferencia=" + dataUltimaTransferencia +
                 ", motivoConclusao='" + motivoConclusao + '\'' +
                 '}';
     }

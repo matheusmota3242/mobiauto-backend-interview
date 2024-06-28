@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "72a454d4-a0a6-41ce-84f3-1d41f81276e3",
+		"name": "mobiauto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7462847"
+	},
+	"item": [
+		{
+			"name": "usuario",
+			"item": [
+				{
+					"name": "registrar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTk0ODk2NTYsImV4cCI6MTcxOTU3NjA1Nn0.SGY5WLT8R0lxOLsOdeYTBIgYc9WZ_yfCjzdzRQ5KiYXVVpI3KpLTV7XkZ7CNxPfl",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5,\n    \"primeiroNome\": \"Matheus\",\n    \"sobrenome\": \"Gurjão\",\n    \"email\": \"mota.matheus95@gmail.com\",\n    \"senha\": \"admin\",\n    \"revenda\": {\n        \"id\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/usuario/registrar",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"registrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\n    \"email\": \"admin@admin.com\",\n    \"senha\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/usuario/login",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "revenda",
+			"item": [
+				{
+					"name": "salvar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cnpj\": \"76097111000120\",\n    \"razaoSocial\": \"Firma Forte Ltda.\",\n    \"nomeFantasia\": \"Firma Forte\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "consultar-por-cnpj",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/76097111000120",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas",
+								"76097111000120"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "oportunidade",
+			"item": [
+				{
+					"name": "gerar-oportunidade",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"revenda\": {\n        \"id\": 1\n    },\n    \"veiculo\": {\n        \n        \"marca\": {\n            \"nome\": \"Toyota\"\n        },\n        \"modelo\": \"Corolla Automático 1.6\",\n        \"versao\": \"Premium\",\n        \"ano\": 2020\n\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/oportunidades",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas",
+								"oportunidades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "transferir",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/76097111000120",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas",
+								"76097111000120"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "atualizar-status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/76097111000120",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas",
+								"76097111000120"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

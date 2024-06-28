@@ -1,6 +1,6 @@
 package com.m2g2.mobiauto_backend_interview.config;
 
-import com.m2g2.mobiauto_backend_interview.service.UsuarioDetailsServiceImpl;
+import com.m2g2.mobiauto_backend_interview.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,11 +24,11 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    private final UsuarioDetailsServiceImpl usuarioDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    public SecurityConfig(JwtFilter jwtFilter, UsuarioDetailsServiceImpl usuarioDetailsServiceImpl) {
+    public SecurityConfig(JwtFilter jwtFilter, UserDetailsServiceImpl userDetailsServiceImpl) {
         this.jwtFilter = jwtFilter;
-        this.usuarioDetailsServiceImpl = usuarioDetailsServiceImpl;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     @Bean
@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/h2-console/**")
+                    auth.requestMatchers("/h2-console/**", "/v3/api-docs/**", "/swagger-ui/index.html")
                             .permitAll();
                     auth.requestMatchers("/api/v1/usuario/login")
                                     .permitAll();
@@ -46,7 +46,7 @@ public class SecurityConfig {
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())
-                .userDetailsService(usuarioDetailsServiceImpl)
+                .userDetailsService(userDetailsServiceImpl)
                 .build();
     }
 

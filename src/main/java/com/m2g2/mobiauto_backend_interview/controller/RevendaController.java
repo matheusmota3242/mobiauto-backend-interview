@@ -4,6 +4,9 @@ import com.m2g2.mobiauto_backend_interview.enums.LogEnum;
 import com.m2g2.mobiauto_backend_interview.model.Oportunidade;
 import com.m2g2.mobiauto_backend_interview.model.Revenda;
 import com.m2g2.mobiauto_backend_interview.service.RevendaService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.slf4j.Logger;
@@ -27,6 +30,15 @@ public class RevendaController {
         this.service = service;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Nova revenda registrada com sucesso.",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Revenda inconsistente",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "Permissão de acesso negada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor.",
+                    content = @Content)})
     @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<?> salvar(@RequestBody @Valid Revenda revenda) {
@@ -36,6 +48,15 @@ public class RevendaController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consulta realizada com sucesso",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", description = "Não há revenda cadastrada para esse cnpj.",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "Permissão de acesso negada.",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor.",
+                    content = @Content)})
     @Secured({"ROLE_ADMIN", "ROLE_PROPRIETARIO", "ROLE_GERENTE"})
     @GetMapping("{cnpj}")
     public ResponseEntity<Revenda> consultar(@PathVariable("cnpj") @CNPJ String cnpj) {

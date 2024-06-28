@@ -3,13 +3,11 @@ package com.m2g2.mobiauto_backend_interview.service;
 import com.m2g2.mobiauto_backend_interview.dto.request.AtualizacaoStatusOportunidade;
 import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import com.m2g2.mobiauto_backend_interview.enums.StatusOportunidade;
-import com.m2g2.mobiauto_backend_interview.exception.RevendaException;
+import com.m2g2.mobiauto_backend_interview.exception.RevendaInconsistenteException;
 import com.m2g2.mobiauto_backend_interview.model.Oportunidade;
-import com.m2g2.mobiauto_backend_interview.model.Revenda;
 import com.m2g2.mobiauto_backend_interview.model.Usuario;
 import com.m2g2.mobiauto_backend_interview.repository.OportunidadeRepository;
-import com.m2g2.mobiauto_backend_interview.utils.AutenticacaoUtils;
-import org.springframework.security.access.AccessDeniedException;
+import com.m2g2.mobiauto_backend_interview.utils.AutorizacaoUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,15 +21,19 @@ public class OportunidadeService {
 
     private final OportunidadeRepository repository;
 
-    private final UsuarioDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public OportunidadeService(OportunidadeRepository repository, UsuarioDetailsServiceImpl userDetailsService) {
+    private final AutorizacaoUtils autorizacaoUtils;
+
+
+    public OportunidadeService(OportunidadeRepository repository, UserDetailsServiceImpl userDetailsService, AutorizacaoUtils autorizacaoUtils) {
         this.repository = repository;
         this.userDetailsService = userDetailsService;
+        this.autorizacaoUtils = autorizacaoUtils;
     }
 
     public void gerar(Oportunidade oportunidade) {
-        Usuario usuarioAutorizado = autorizarUsuario(oportunidade.getRevenda());
+        Usuario usuarioAutorizado = autorizacaoUtils.autorizarUsuario(oportunidade.getRevenda());
         oportunidade.setStatusOportunidade(StatusOportunidade.NOVA);
         oportunidade.setDataInicio(LocalDate.now());
         Optional<Usuario> usuarioSelecionado = Optional.ofNullable(selecionarUsuario(oportunidade.getRevenda().getId()));
@@ -43,34 +45,24 @@ public class OportunidadeService {
     }
 
     public void transferir(String emailAssistente, Long oportunidadeId) {
-        Oportunidade oportunidade = repository.findById(oportunidadeId).orElseThrow(() -> new RevendaException("Oportunidade inexistente."));
-        autorizarUsuario(oportunidade.getRevenda());
+        Oportunidade oportunidade = repository.findById(oportunidadeId).orElseThrow(() -> new RevendaInconsistenteException("Oportunidade inexistente."));
+        autorizacaoUtils.autorizarUsuario(oportunidade.getRevenda());
         Usuario usuarioResponsavel = userDetailsService.consultarUsuario(emailAssistente);
         oportunidade.setUsuario(usuarioResponsavel);
+        oportunidade.setDataUltimaTransferencia(LocalDate.now());
         repository.save(oportunidade);
     }
 
     public void atualizarStatus(AtualizacaoStatusOportunidade atualizacaoStatusOportunidade) {
-        Oportunidade oportunidade = repository.findById(atualizacaoStatusOportunidade.oportunidadeId()).orElseThrow(() -> new RevendaException("Oportunidade inexistente."));
-        autorizarUsuario(oportunidade.getRevenda());
+        Oportunidade oportunidade = repository.findById(atualizacaoStatusOportunidade.oportunidadeId()).orElseThrow(() -> new RevendaInconsistenteException("Oportunidade inexistente."));
+        autorizacaoUtils.autorizarUsuario(oportunidade.getRevenda());
         oportunidade.setStatusOportunidade(atualizacaoStatusOportunidade.statusOportunidade());
         if (atualizacaoStatusOportunidade.statusOportunidade().equals(StatusOportunidade.CONCLUIDA)) {
             oportunidade.setDataFim(LocalDate.now());
+            oportunidade.setMotivoConclusao(atualizacaoStatusOportunidade.motivoConclusao());
         }
         oportunidade.setStatusOportunidade(atualizacaoStatusOportunidade.statusOportunidade());
         repository.save(oportunidade);
-    }
-
-    private Usuario autorizarUsuario(Revenda revenda) {
-        DescricaoPapel descricaoPapel = AutenticacaoUtils.receberPapelPorPrioridade();
-        String emailAutenticado = AutenticacaoUtils.receberEmail();
-        Usuario usuarioAutenticado = userDetailsService.consultarUsuario(emailAutenticado);
-        if (descricaoPapel.equals(DescricaoPapel.PROPRIETARIO) || descricaoPapel.equals(DescricaoPapel.GERENTE)) {
-            if (!revenda.equals(usuarioAutenticado.getRevenda())) {
-                throw new AccessDeniedException("Permissão negada para esta loja.");
-            }
-        }
-        return usuarioAutenticado;
     }
 
     private Usuario selecionarUsuario(Long revendaId) {
