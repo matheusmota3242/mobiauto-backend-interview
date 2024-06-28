@@ -13,7 +13,7 @@ Esse sistema foi desenvolvido utilizando as versões Java 17 e Spring Boot 3.
 ## Banco de dados
 A fim de facilitar a execução do projeto, foi utilizado um banco de dados em memória H2. O banco de dados é populado com dados iniciais ao iniciar a aplicação.
 
-![img_3.png](img_3.png)
+![img_3.png](docs/execute-on-init.png)
 
 ## Dependências
 
@@ -42,7 +42,7 @@ A fim de facilitar a execução do projeto, foi utilizado um banco de dados em m
 ```
 http://localhost:8080/swagger-ui.html
 ```
-![img.png](img.png)
+![img.png](docs/swagger.png)
 
 - **Postman**: importe o arquivo `postman/mobiauto.postman_collection.json` para o Postman e utilize as requisições disponíveis.
 
@@ -52,4 +52,4 @@ Os testes unitários da aplicação foram realizados com o uso Junit 5 e Mockito
 
 O sistema encontra-se com cobertura de 100% em todas as classes que implementam regras de negócio.
 
-![img_2.png](img_2.png)
+![img_2.png](docs/coverage.png)
