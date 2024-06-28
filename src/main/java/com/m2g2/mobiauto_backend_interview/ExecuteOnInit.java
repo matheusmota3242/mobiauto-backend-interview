@@ -2,8 +2,10 @@ package com.m2g2.mobiauto_backend_interview;
 
 import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import com.m2g2.mobiauto_backend_interview.model.Papel;
+import com.m2g2.mobiauto_backend_interview.model.Revenda;
 import com.m2g2.mobiauto_backend_interview.model.Usuario;
 import com.m2g2.mobiauto_backend_interview.repository.PapelRepository;
+import com.m2g2.mobiauto_backend_interview.repository.RevendaRepository;
 import com.m2g2.mobiauto_backend_interview.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,19 +34,23 @@ public class ExecuteOnInit implements ApplicationRunner {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final RevendaRepository revendaRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecuteOnInit.class);
 
-    public ExecuteOnInit(PapelRepository papelRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public ExecuteOnInit(PapelRepository papelRepository, UsuarioRepository usuarioRepository, RevendaRepository revendaRepository, PasswordEncoder passwordEncoder) {
         this.papelRepository = papelRepository;
         this.usuarioRepository = usuarioRepository;
+        this.revendaRepository = revendaRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         LOGGER.info("Iniciando população da base de dados...");
+        // Popula a base de dados com os papéis dos usuários
         Papel admin = new Papel();
         admin.setDescricao(DescricaoPapel.ADMIN.name());
 
@@ -59,15 +65,23 @@ public class ExecuteOnInit implements ApplicationRunner {
 
         List<Papel> papeis = papelRepository.saveAll(List.of(admin, assistente, gerente, proprietario));
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail("admin@admin.com");
-        usuario.setSenha(passwordEncoder.encode("admin"));
-        usuario.setPrimeiroNome("João");
-        usuario.setSobrenome("Silva");
-        usuario.setPapeis(Collections.singleton(papeis.get(0)));
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isEmpty()) {
-            usuarioRepository.save(usuario);
+        // Popula a base de dados com um usuário administrador
+        Usuario adminUser = new Usuario();
+        adminUser.setEmail("admin@admin.com");
+        adminUser.setSenha(passwordEncoder.encode("admin"));
+        adminUser.setPrimeiroNome("João");
+        adminUser.setSobrenome("Silva");
+        adminUser.setPapeis(Collections.singleton(papeis.get(0)));
+        if (usuarioRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
+            usuarioRepository.save(adminUser);
         }
+
+        // Popula a base de dados com uma revenda
+        Revenda revenda = new Revenda();
+        revenda.setCnpj("31621417000103");
+        revenda.setRazaoSocial("Revenda Teste Ltda");
+        revenda.setNomeFantasia("Revenda Teste");
+        revendaRepository.save(revenda);
         LOGGER.info("População da base de dados finalizada com sucesso.");
     }
 }

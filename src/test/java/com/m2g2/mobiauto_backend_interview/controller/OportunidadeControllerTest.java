@@ -13,6 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -50,10 +53,21 @@ class OportunidadeControllerTest {
     }
 
     @Test
-    void deveRetornarOk_quandoStatusOportunidadeAtualizadoComSucesso() {
+    void deveRetornarOk_quandoStatusOportunidadeAtualizado_comSucesso() {
         doNothing().when(service).atualizarStatus(any());
         ResponseEntity<?> response = controller.atualizarStatus(new AtualizacaoStatusOportunidade(1L, StatusOportunidade.EM_ATENDIMENTO, "Motivo"));
         Assertions.assertEquals(200, response.getStatusCode().value());
+    }
+
+    @Test
+    void deveRetornarListaDeOportunidadesPorRevenda_comSucesso() {
+        when(service.listarPorRevenda(1L)).thenReturn(List.of(new Oportunidade(), new Oportunidade()));
+
+        ResponseEntity<List<Oportunidade>> response = controller.listarPorRevenda(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
+
     }
 
 }

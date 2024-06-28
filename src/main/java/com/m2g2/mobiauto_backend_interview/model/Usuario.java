@@ -1,5 +1,6 @@
 package com.m2g2.mobiauto_backend_interview.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import jakarta.persistence.*;
@@ -35,8 +36,10 @@ public class Usuario implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
-    @ManyToMany
-    @JoinTable(name = "papel_usuario")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "papel_usuario",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "papel_id"))
     @NotNull(message = "O campo 'papeis' deve ser informado")
     private Collection<Papel> papeis = new ArrayList<>();
 

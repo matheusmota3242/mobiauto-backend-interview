@@ -2,6 +2,8 @@ package com.m2g2.mobiauto_backend_interview.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Papel {
 

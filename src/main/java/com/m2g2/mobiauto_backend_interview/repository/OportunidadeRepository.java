@@ -18,4 +18,5 @@ public interface OportunidadeRepository extends JpaRepository<Oportunidade, Long
             "WHERE p.descricao = :descricaoPapel " +
             "AND o.revenda.id = :revendaId")
     List<Oportunidade> findByUsuarioPapelAndRevenda(@Param("descricaoPapel") String descricaoPapel, @Param("revendaId") Long revendaId);
+    List<Oportunidade> findByRevenda(Revenda revenda);
 }

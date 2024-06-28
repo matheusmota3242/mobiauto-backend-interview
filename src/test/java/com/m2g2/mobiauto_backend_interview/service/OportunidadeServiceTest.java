@@ -78,13 +78,13 @@ class OportunidadeServiceTest {
     }
 
     @Test
-    void gerar_AccessDeniedException() {
+    void gerar_throwsAccessDeniedException() {
         when(autorizacaoUtils.autorizarUsuario(any())).thenThrow(AccessDeniedException.class);
         assertThrows(AccessDeniedException.class, () -> oportunidadeService.gerar(oportunidade));
     }
 
     @Test
-    void transferir() {
+    void transferir_comSucesso() {
         Mockito.when(autorizacaoUtils.autorizarUsuario(any())).thenReturn(usuario);
         Usuario usuarioResponsavel = new Usuario();
         usuarioResponsavel.setEmail("assistente1@example.com");
@@ -97,14 +97,14 @@ class OportunidadeServiceTest {
     }
 
     @Test
-    void transferir_RevendaNaoEncontradaException() {
+    void transferir_revendaNaoEncontradaException() {
         when(oportunidadeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(RevendaInconsistenteException.class, () -> oportunidadeService.transferir("assistente@example.com", 1L));
     }
 
     @Test
-    void atualizarStatus() {
+    void atualizarStatus_comSucesso() {
         when(oportunidadeRepository.findById(anyLong())).thenReturn(Optional.of(oportunidade));
 
         AtualizacaoStatusOportunidade atualizacaoStatus = new AtualizacaoStatusOportunidade(1L, StatusOportunidade.CONCLUIDA, "Motivo");
@@ -123,6 +123,13 @@ class OportunidadeServiceTest {
         AtualizacaoStatusOportunidade atualizacaoStatus = new AtualizacaoStatusOportunidade(1L, StatusOportunidade.CONCLUIDA, "Motivo");
 
         assertThrows(RevendaInconsistenteException.class, () -> oportunidadeService.atualizarStatus(atualizacaoStatus));
+    }
+
+    @Test
+    void listarPorRevenda_comSucesso() {
+        when(oportunidadeRepository.findByRevenda(any())).thenReturn(Collections.singletonList(oportunidade));
+
+        assertEquals(Collections.singletonList(oportunidade), oportunidadeService.listarPorRevenda(1L));
     }
 
 }

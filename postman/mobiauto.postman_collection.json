@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 5,\n    \"primeiroNome\": \"Matheus\",\n    \"sobrenome\": \"Gurjão\",\n    \"email\": \"mota.matheus95@gmail.com\",\n    \"senha\": \"admin\",\n    \"revenda\": {\n        \"id\": 1\n    }\n}",
+							"raw": "{\n    \"id\": 5,\n    \"primeiroNome\": \"Matheus\",\n    \"sobrenome\": \"Gurjão\",\n    \"email\": \"mota.matheus95@gmail.com\",\n    \"senha\": \"admin\",\n    \"revenda\": {\n        \"id\": 1\n    },\n    \"papeis\": [\n        {\n            \"id\": 1\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -154,13 +154,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTk1Mzk5NTQsImV4cCI6MTcxOTYyNjM1NH0.e6MmrWu5zBP9TpHhSgTZ-Gy-SOH2IDfv3h603LLIeBxL_5Y4pTdgg-27Ho8MZmLr",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"revenda\": {\n        \"id\": 1\n    },\n    \"veiculo\": {\n        \n        \"marca\": {\n            \"nome\": \"Toyota\"\n        },\n        \"modelo\": \"Corolla Automático 1.6\",\n        \"versao\": \"Premium\",\n        \"ano\": 2020\n\n    }\n}",
+							"raw": "{\n    \"revenda\": {\n        \"id\": 1\n    },\n    \"veiculo\": {\n        \"marca\": {\n            \"nome\": \"Toyota\"\n        },\n        \"modelo\": \"Corolla Automático 1.6\",\n        \"versao\": \"Premium\",\n        \"ano\": 2020\n\n    },\n    \"cliente\": {\n        \"primeiroNome\": \"Matheus\",\n        \"sobrenome\": \"Mota\",\n        \"phoneNumber\": \"(84) 99960-7700\",\n        \"email\": \"mota@gmail.com\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,12 +190,12 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTkzNjkxOTUsImV4cCI6MTcxOTQ1NTU5NX0.J0CatcLpqmjSC8Vn2fD3u0oZ9vbvomiiQQZiuyOmg3f69qBWhUvRAIlU1WPNDT7N",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTk1Mzk5NTQsImV4cCI6MTcxOTYyNjM1NH0.e6MmrWu5zBP9TpHhSgTZ-Gy-SOH2IDfv3h603LLIeBxL_5Y4pTdgg-27Ho8MZmLr",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/76097111000120",
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/oportunidades/:id/transferencias/:email",
 							"host": [
 								"{{LOCAL}}"
 							],
@@ -204,7 +204,49 @@
 								"api",
 								"v1",
 								"revendas",
-								"76097111000120"
+								"oportunidades",
+								":id",
+								"transferencias",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "email",
+									"value": "mota@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar-por-revenda",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3MTk1Mzk5NTQsImV4cCI6MTcxOTYyNjM1NH0.e6MmrWu5zBP9TpHhSgTZ-Gy-SOH2IDfv3h603LLIeBxL_5Y4pTdgg-27Ho8MZmLr",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/oportunidades/1/listar",
+							"host": [
+								"{{LOCAL}}"
+							],
+							"port": "{{PORT}}",
+							"path": [
+								"api",
+								"v1",
+								"revendas",
+								"oportunidades",
+								"1",
+								"listar"
 							]
 						}
 					},
@@ -213,7 +255,7 @@
 				{
 					"name": "atualizar-status",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
@@ -221,8 +263,17 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oportunidadeId\": 1,\n    \"statusOportunidade\": \"EM_ATENDIMENTO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/76097111000120",
+							"raw": "{{LOCAL}}:{{PORT}}/api/v1/revendas/oportunidades",
 							"host": [
 								"{{LOCAL}}"
 							],
@@ -231,7 +282,7 @@
 								"api",
 								"v1",
 								"revendas",
-								"76097111000120"
+								"oportunidades"
 							]
 						}
 					},

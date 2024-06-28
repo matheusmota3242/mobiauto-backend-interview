@@ -5,8 +5,10 @@ import com.m2g2.mobiauto_backend_interview.enums.DescricaoPapel;
 import com.m2g2.mobiauto_backend_interview.enums.StatusOportunidade;
 import com.m2g2.mobiauto_backend_interview.exception.RevendaInconsistenteException;
 import com.m2g2.mobiauto_backend_interview.model.Oportunidade;
+import com.m2g2.mobiauto_backend_interview.model.Revenda;
 import com.m2g2.mobiauto_backend_interview.model.Usuario;
 import com.m2g2.mobiauto_backend_interview.repository.OportunidadeRepository;
+import com.m2g2.mobiauto_backend_interview.repository.RevendaRepository;
 import com.m2g2.mobiauto_backend_interview.utils.AutorizacaoUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,9 @@ import java.util.stream.Collectors;
 public class OportunidadeService {
 
     private final OportunidadeRepository repository;
-
     private final UserDetailsServiceImpl userDetailsService;
 
     private final AutorizacaoUtils autorizacaoUtils;
-
 
     public OportunidadeService(OportunidadeRepository repository, UserDetailsServiceImpl userDetailsService, AutorizacaoUtils autorizacaoUtils) {
         this.repository = repository;
@@ -65,6 +65,12 @@ public class OportunidadeService {
         repository.save(oportunidade);
     }
 
+    public List<Oportunidade> listarPorRevenda(Long revendaId) {
+        Revenda revenda = new Revenda();
+        revenda.setId(revendaId);
+        return repository.findByRevenda(revenda);
+    }
+
     private Usuario selecionarUsuario(Long revendaId) {
         List<Oportunidade> oportunidadesPorRevenda = repository.findByUsuarioPapelAndRevenda(DescricaoPapel.ASSISTENTE.name(), revendaId);
         Map<Usuario, List<Oportunidade>> oportunidadesEmAtendimento = oportunidadesPorRevenda.stream()
@@ -82,4 +88,6 @@ public class OportunidadeService {
 
         return oportunidadesEmAtendimento.keySet().stream().findFirst().orElse(null);
     }
+
+
 }

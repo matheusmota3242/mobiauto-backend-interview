@@ -1,5 +1,6 @@
 package com.m2g2.mobiauto_backend_interview.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.m2g2.mobiauto_backend_interview.enums.StatusOportunidade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -13,21 +14,23 @@ public class Oportunidade  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @Enumerated(EnumType.STRING)
     private StatusOportunidade statusOportunidade;
 
-    @ManyToOne
-    @JoinColumn(name = "revenda_id")
+    @NotNull(message = "Campo 'revenda' precisa ser informado.")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "revenda_id", nullable = false)
     private Revenda revenda;
 
     @NotNull(message = "Campo 'veículo' precisa ser informado.")
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, optional = false)
     private Veiculo veiculo;
 
+    @NotNull(message = "Campo 'cliente' precisa ser informado.")
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;

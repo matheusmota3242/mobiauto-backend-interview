@@ -17,6 +17,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/revendas/oportunidades")
@@ -27,6 +28,7 @@ public class OportunidadeController {
     public static final String METODO_SALVAR = "salvar";
     public static final String METODO_TRANSFERIR = "transferir";
     public static final String METODO_ATUALIZAR_STATUS = "atualizarStatus";
+    public static final String METODO_LISTAR_POR_REVENDA = "listarPorRevenda";
 
     private final OportunidadeService service;
 
@@ -87,5 +89,14 @@ public class OportunidadeController {
         service.atualizarStatus(atualizacaoStatusOportunidade);
         LOGGER.info(LogEnum.ENTRADA.getMensagem(), METODO_ATUALIZAR_STATUS, "{}");
         return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_ADMIN", "ROLE_PROPRIETARIO", "ROLE_GERENTE", "ROLE_ASSISTENTE"})
+    @GetMapping("{revendaId}/listar")
+    public ResponseEntity<List<Oportunidade>> listarPorRevenda(@PathVariable("revendaId") Long revendaId) {
+        LOGGER.info(LogEnum.ENTRADA.getMensagem(), METODO_LISTAR_POR_REVENDA, revendaId);
+        List<Oportunidade> oportunidades = service.listarPorRevenda(revendaId);
+        LOGGER.info(LogEnum.SAIDA.getMensagem(), METODO_LISTAR_POR_REVENDA, oportunidades);
+        return ResponseEntity.ok(oportunidades);
     }
 }

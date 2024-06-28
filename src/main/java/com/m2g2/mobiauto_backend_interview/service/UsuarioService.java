@@ -47,6 +47,7 @@ public class UsuarioService {
         return new AutenticacaoResponse(jwt);
     }
 
+
     public void atualizarPapeis(List<Papel> papeis, String emailUsuario) {
         Usuario persistido = repository.findByEmail(emailUsuario).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
         autorizacaoUtils.autorizarUsuario(persistido.getRevenda());

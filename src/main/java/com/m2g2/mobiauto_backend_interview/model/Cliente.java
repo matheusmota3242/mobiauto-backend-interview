@@ -23,8 +23,8 @@ public class Cliente {
     @Column(unique = true)
     private String email;
 
-    @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}")
-    private String phoneNumber;
+    @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O campo 'telefone' deve seguir o padrão (99) 99999-9999.")
+    private String telefone;
 
     public void setId(Long id) {
         this.id = id;
@@ -59,10 +59,10 @@ public class Cliente {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return telefone;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.telefone = phoneNumber;
     }
 }
