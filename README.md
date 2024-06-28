@@ -1,6 +1,6 @@
 # mobiauto-backend-interview
 
-Sistema de gerenciamento de revendas de veículos desenvolvido para atender os requisitoos presentes no desafio de backend da Mobiauto, conforme documentação enviada.
+Sistema de gerenciamento de revendas de veículos desenvolvido para atender os requisitos presentes no desafio de backend da Mobiauto conforme documentação presente em `docs/Senior_Backend_Developers_Interview.pdf`.
 
 Esse sistema foi desenvolvido utilizando as versões Java 17 e Spring Boot 3.
 
@@ -8,17 +8,20 @@ Esse sistema foi desenvolvido utilizando as versões Java 17 e Spring Boot 3.
 
 - Java 17
 - Maven
-- Docker
+- Docker (opcional)
 
 ## Banco de dados
 A fim de facilitar a execução do projeto, foi utilizado um banco de dados em memória H2. O banco de dados é populado com dados iniciais ao iniciar a aplicação.
+
+![img_3.png](docs/execute-on-init.png)
 
 Para visualizar o H2, basta acessar o endereço a seguir - as credenciais de acesso estão no arquivo `application.yml`:
 ```
 http://localhost:8080/h2-console
 ```
 
-![img_3.png](docs/execute-on-init.png)
+![img.png](docs/h2.png)
+
 
 ## Dependências
 
@@ -53,13 +56,17 @@ Rode a aplicação utilizando uma IDE da sua escolha. O sistema estará rodando 
 
 ## Documentação da API
 
-- **Swagger**: estando o sistema rodando na porta 8080. Acesse o endereço a seguir para visualizar o Swagger da API.
+### Swagger
+
+Estando o sistema rodando na porta 8080. Acesse o endereço a seguir para visualizar o Swagger da API.
 ```
 http://localhost:8080/swagger-ui.html
 ```
 ![img.png](docs/swagger.png)
 
-- **Postman**: importe o arquivo `postman/mobiauto.postman_collection.json` para o Postman e utilize as requisições disponíveis.
+### Postman
+
+Importe o arquivo `postman/mobiauto.postman_collection.json` para acessar a collection Postman e utilizar as requisições disponíveis.
 
 ## Autenticação
 
