@@ -76,7 +76,7 @@ Nessa aplciação a autenticação se dá por meio de tokens JWT. Para obter um 
 ```json
 {
   "email": "email@email.com",
-  "senha": "123456
+  "senha": "123456"
 }
 ```
 ### Response
